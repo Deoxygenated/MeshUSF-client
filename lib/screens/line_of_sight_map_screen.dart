@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n.dart';
 import '../screens/channels_screen.dart';
 import '../screens/contacts_screen.dart';
+import '../screens/tasks_screen.dart';
 import '../models/app_settings.dart';
 import '../services/app_settings_service.dart';
 import '../services/line_of_sight_service.dart';
@@ -1735,6 +1736,12 @@ class _LineOfSightMapScreenState extends State<LineOfSightMapScreen> {
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const ChannelsScreen(hideBackButton: true)),
+        );
+        break;
+      case 3:
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const TasksScreen()),
         );
         break;
     }

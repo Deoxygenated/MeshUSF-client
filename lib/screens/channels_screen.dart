@@ -35,6 +35,7 @@ import 'community_qr_scanner_screen.dart';
 import 'contacts_screen.dart';
 import 'map_screen.dart';
 import 'settings_screen.dart';
+import 'tasks_screen.dart';
 import '../review_mode/review_mode_banner.dart';
 
 class ChannelsScreen extends StatefulWidget {
@@ -721,6 +722,12 @@ class _ChannelsScreenState extends State<ChannelsScreen>
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const MapScreen(hideBackButton: true)),
+        );
+        break;
+      case 3:
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const TasksScreen()),
         );
         break;
     }

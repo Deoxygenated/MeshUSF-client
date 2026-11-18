@@ -112,6 +112,11 @@ class QuickSwitchBar extends StatelessWidget {
                     selectedIcon: const Icon(Icons.map),
                     label: context.l10n.nav_map,
                   ),
+                  NavigationDestination(
+                    icon: const Icon(Icons.checklist),
+                    selectedIcon: const Icon(Icons.checklist),
+                    label: context.l10n.nav_tasks,
+                  ),
                 ],
               ),
             ),

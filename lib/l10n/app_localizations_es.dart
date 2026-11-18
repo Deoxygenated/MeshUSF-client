@@ -25,6 +25,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nav_map => 'Mapa';
 
   @override
+  String get nav_tasks => 'Tareas';
+
+  @override
   String get common_cancel => 'Cancelar';
 
   @override

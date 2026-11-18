@@ -130,6 +130,12 @@ abstract class AppLocalizations {
   /// **'Map'**
   String get nav_map;
 
+  /// No description provided for @nav_tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get nav_tasks;
+
   /// No description provided for @common_cancel.
   ///
   /// In en, this message translates to:
