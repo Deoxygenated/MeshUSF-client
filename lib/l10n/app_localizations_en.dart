@@ -28,6 +28,312 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nav_tasks => 'Tasks';
 
   @override
+  String get tasks_assignSection => 'Assign';
+
+  @override
+  String get tasks_storageNotice =>
+      'Tasks are saved on this device and assignments are sent as private messages.';
+
+  @override
+  String get tasks_openForm => 'Assign a task';
+
+  @override
+  String get tasks_closeForm => 'Close form';
+
+  @override
+  String get tasks_assignedTasks => 'Assigned tasks';
+
+  @override
+  String get tasks_noAssignedTasks => 'No tasks assigned yet.';
+
+  @override
+  String get tasks_lookingSection => 'Assigned to me';
+
+  @override
+  String get tasks_noReceivedTasks => 'No tasks have been assigned to you yet.';
+
+  @override
+  String tasks_assignedOn(Object date) {
+    return 'Assigned: $date';
+  }
+
+  @override
+  String get tasks_saveTask => 'Assign task';
+
+  @override
+  String get tasks_saveFailed => 'Could not save this task. Please try again.';
+
+  @override
+  String get tasks_loadFailed => 'Could not load assigned tasks.';
+
+  @override
+  String get tasks_missingIdentity =>
+      'The connected radio identity is unavailable.';
+
+  @override
+  String get tasks_retryLoad => 'Retry';
+
+  @override
+  String get tasks_chooseRecipients => 'Choose recipients';
+
+  @override
+  String get tasks_searchRecipients => 'Search groups and contacts';
+
+  @override
+  String tasks_recipientsSelected(int count) {
+    return '$count recipient tags selected';
+  }
+
+  @override
+  String get tasks_everyone => 'Everyone';
+
+  @override
+  String get tasks_myself => 'Myself';
+
+  @override
+  String get tasks_groups => 'Groups';
+
+  @override
+  String get tasks_contacts => 'Contacts';
+
+  @override
+  String get tasks_noGroupsOrContacts =>
+      'No groups or contacts are available yet.';
+
+  @override
+  String tasks_groupMemberCount(int count) {
+    return '$count members';
+  }
+
+  @override
+  String get tasks_dueDate => 'Due date';
+
+  @override
+  String get tasks_noDueDate => 'No due date';
+
+  @override
+  String get tasks_immediate => 'Immediate (within 24 hours)';
+
+  @override
+  String get tasks_longTerm => 'Long-term date';
+
+  @override
+  String get tasks_completeWithin => 'Complete within';
+
+  @override
+  String tasks_hours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours',
+      one: '1 hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tasks_chooseDate => 'Choose a date';
+
+  @override
+  String get tasks_taskName => 'Task name';
+
+  @override
+  String get tasks_taskNameHint =>
+      'Up to 17 UTF-8 bytes; the Task- prefix and a unique ID are added to the channel name';
+
+  @override
+  String get tasks_taskNameRequired => 'Enter a task name.';
+
+  @override
+  String get tasks_taskNameTooLong =>
+      'Task name must use 17 UTF-8 bytes or fewer.';
+
+  @override
+  String get tasks_descriptionOptional => 'Description (optional)';
+
+  @override
+  String get tasks_automaticResend => 'Automatically retry until acknowledged';
+
+  @override
+  String get tasks_recipientRequired => 'Choose at least one recipient tag.';
+
+  @override
+  String get tasks_dueDateRequired => 'Choose a due date.';
+
+  @override
+  String tasks_dueOn(Object date) {
+    return 'Due: $date';
+  }
+
+  @override
+  String get tasks_autoResendEnabled => 'Automatic resend enabled';
+
+  @override
+  String get tasks_autoResendDisabled => 'Automatic resend disabled';
+
+  @override
+  String get tasks_channelsNotReady =>
+      'Wait for task channels to finish loading before assigning.';
+
+  @override
+  String get tasks_noReachableRecipients =>
+      'The selected tags do not match any chat contacts.';
+
+  @override
+  String get tasks_channelSetupFailed =>
+      'Could not configure a private task channel. Check that a channel slot is available.';
+
+  @override
+  String get tasks_sendFailed =>
+      'Could not send all task messages. The task is saved and can be retried.';
+
+  @override
+  String get tasks_messageProcessingFailed =>
+      'Could not process an incoming task message.';
+
+  @override
+  String get tasks_channelUnavailable =>
+      'The task channel is not available on this radio.';
+
+  @override
+  String get tasks_statusUntouched => 'Untouched';
+
+  @override
+  String get tasks_statusWorking => 'Being worked on';
+
+  @override
+  String get tasks_statusCompleted => 'Completed';
+
+  @override
+  String get tasks_statusVerifiedComplete => 'Verified Complete';
+
+  @override
+  String get tasks_you => 'You';
+
+  @override
+  String tasks_workingMembers(Object members) {
+    return 'Working on it: $members';
+  }
+
+  @override
+  String tasks_deliveryCount(int received, int expected) {
+    return '$received of $expected received';
+  }
+
+  @override
+  String tasks_assignedBy(Object name) {
+    return 'Assigned by: $name';
+  }
+
+  @override
+  String get tasks_unknownAssigner => 'Unknown';
+
+  @override
+  String get tasks_expand => 'Expand';
+
+  @override
+  String get tasks_collapse => 'Collapse';
+
+  @override
+  String get tasks_taskChannel => 'Task channel';
+
+  @override
+  String get tasks_noChannelMessages => 'No channel messages yet.';
+
+  @override
+  String get tasks_channelMessage => 'Message the task channel';
+
+  @override
+  String get tasks_channelMessageTooLong =>
+      'This message is too long for the task channel.';
+
+  @override
+  String get tasks_send => 'Send';
+
+  @override
+  String get tasks_openChannel => 'Open channel';
+
+  @override
+  String get tasks_searchTasks => 'Search tasks';
+
+  @override
+  String get tasks_filterStatus => 'Status';
+
+  @override
+  String get tasks_filterTag => 'Tag';
+
+  @override
+  String get tasks_filterAll => 'All statuses';
+
+  @override
+  String get tasks_filterAllTags => 'All tags';
+
+  @override
+  String get tasks_sortBy => 'Sort by';
+
+  @override
+  String get tasks_sortRecentlyAssigned => 'Recently assigned';
+
+  @override
+  String get tasks_sortDueSoonest => 'Due soonest';
+
+  @override
+  String get tasks_sortTaskName => 'Task name';
+
+  @override
+  String get tasks_shareUpdate => 'Share task update';
+
+  @override
+  String get tasks_noTaskToShare => 'No task is linked to this channel.';
+
+  @override
+  String get tasks_chooseTaskToShare => 'Choose a task to share';
+
+  @override
+  String tasks_updateMessage(Object part, Object taskId, Object total) {
+    return 'Task update for $taskId ($part/$total) — tap to review';
+  }
+
+  @override
+  String get tasks_updateIncomplete =>
+      'This task update is incomplete. Wait for all parts to arrive.';
+
+  @override
+  String get tasks_updateOutdated =>
+      'This task update is not newer than your saved version.';
+
+  @override
+  String get tasks_updateApplied => 'Task update applied.';
+
+  @override
+  String get tasks_updateApplyTitle => 'Apply task update?';
+
+  @override
+  String tasks_updateApplyBody(Object sender, Object taskName) {
+    return 'Apply the newer details for “$taskName” shared by $sender?';
+  }
+
+  @override
+  String get tasks_editTask => 'Edit task';
+
+  @override
+  String get tasks_taskUpdated => 'Task updated.';
+
+  @override
+  String get tasks_updateSendFailed => 'Could not share the task update.';
+
+  @override
+  String get tasks_updateSent => 'Task update shared.';
+
+  @override
+  String get tasks_updateNotAuthorized =>
+      'Only the task assigner can change its main details.';
+
+  @override
+  String get tasks_noVisibleChannels =>
+      'Task channels appear here after you open them from a task.';
+
+  @override
   String get common_cancel => 'Cancel';
 
   @override

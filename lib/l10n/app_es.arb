@@ -14,6 +14,145 @@
   "nav_channels": "Canales",
   "nav_map": "Mapa",
   "nav_tasks": "Tareas",
+  "tasks_assignSection": "Asignar",
+  "tasks_storageNotice": "Las tareas se guardan en este dispositivo y se envían como mensajes privados.",
+  "tasks_openForm": "Asignar una tarea",
+  "tasks_closeForm": "Cerrar formulario",
+  "tasks_assignedTasks": "Tareas asignadas",
+  "tasks_noAssignedTasks": "Aún no hay tareas asignadas.",
+  "tasks_lookingSection": "Asignadas a mí",
+  "tasks_noReceivedTasks": "Aún no te han asignado tareas.",
+  "tasks_assignedOn": "Asignada: {date}",
+  "@tasks_assignedOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "tasks_saveTask": "Asignar tarea",
+  "tasks_saveFailed": "No se pudo guardar la tarea. Inténtalo de nuevo.",
+  "tasks_loadFailed": "No se pudieron cargar las tareas asignadas.",
+  "tasks_missingIdentity": "La identidad de la radio conectada no está disponible.",
+  "tasks_retryLoad": "Reintentar",
+  "tasks_chooseRecipients": "Elegir destinatarios",
+  "tasks_searchRecipients": "Buscar grupos y contactos",
+  "tasks_recipientsSelected": "{count} etiquetas de destinatario seleccionadas",
+  "@tasks_recipientsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_everyone": "Todos",
+  "tasks_myself": "Yo",
+  "tasks_groups": "Grupos",
+  "tasks_contacts": "Contactos",
+  "tasks_noGroupsOrContacts": "Aún no hay grupos ni contactos disponibles.",
+  "tasks_groupMemberCount": "{count} miembros",
+  "@tasks_groupMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_dueDate": "Fecha límite",
+  "tasks_noDueDate": "Sin fecha límite",
+  "tasks_immediate": "Inmediata (dentro de 24 horas)",
+  "tasks_longTerm": "Fecha a largo plazo",
+  "tasks_completeWithin": "Completar en",
+  "tasks_hours": "{count, plural, one{1 hora} other{{count} horas}}",
+  "@tasks_hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_chooseDate": "Elegir una fecha",
+  "tasks_taskName": "Nombre de la tarea",
+  "tasks_taskNameHint": "Hasta 17 bytes UTF-8; se añaden el prefijo Task- y un ID único al nombre del canal",
+  "tasks_taskNameRequired": "Introduce un nombre para la tarea.",
+  "tasks_taskNameTooLong": "El nombre de la tarea debe tener 17 bytes UTF-8 o menos.",
+  "tasks_descriptionOptional": "Descripción (opcional)",
+  "tasks_automaticResend": "Reintentar automáticamente hasta recibir confirmación",
+  "tasks_recipientRequired": "Elige al menos una etiqueta de destinatario.",
+  "tasks_dueDateRequired": "Elige una fecha límite.",
+  "tasks_dueOn": "Fecha límite: {date}",
+  "@tasks_dueOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "tasks_autoResendEnabled": "Reenvío automático activado",
+  "tasks_autoResendDisabled": "Reenvío automático desactivado",
+  "tasks_channelsNotReady": "Espera a que terminen de cargarse los canales antes de asignar.",
+  "tasks_noReachableRecipients": "Las etiquetas seleccionadas no coinciden con ningún contacto de chat.",
+  "tasks_channelSetupFailed": "No se pudo configurar un canal privado para la tarea. Comprueba que haya un espacio disponible.",
+  "tasks_sendFailed": "No se pudieron enviar todos los mensajes. La tarea está guardada y se puede reintentar.",
+  "tasks_messageProcessingFailed": "No se pudo procesar un mensaje de tarea entrante.",
+  "tasks_channelUnavailable": "El canal de la tarea no está disponible en esta radio.",
+  "tasks_statusUntouched": "Sin empezar",
+  "tasks_statusWorking": "En curso",
+  "tasks_statusCompleted": "Completada",
+  "tasks_statusVerifiedComplete": "Completada verificada",
+  "tasks_you": "Tú",
+  "tasks_workingMembers": "Trabajando en ello: {members}",
+  "@tasks_workingMembers": {
+    "placeholders": {
+      "members": {}
+    }
+  },
+  "tasks_deliveryCount": "{received} de {expected} recibidas",
+  "@tasks_deliveryCount": {
+    "placeholders": {
+      "received": {
+        "type": "int"
+      },
+      "expected": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_assignedBy": "Asignada por: {name}",
+  "@tasks_assignedBy": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "tasks_unknownAssigner": "Desconocido",
+  "tasks_expand": "Expandir",
+  "tasks_collapse": "Contraer",
+  "tasks_taskChannel": "Canal de la tarea",
+  "tasks_noChannelMessages": "Aún no hay mensajes en el canal.",
+  "tasks_channelMessage": "Mensaje al canal de la tarea",
+  "tasks_channelMessageTooLong": "El mensaje es demasiado largo para el canal de la tarea.",
+  "tasks_send": "Enviar",
+  "tasks_openChannel": "Abrir canal",
+  "tasks_searchTasks": "Buscar tareas",
+  "tasks_filterStatus": "Estado",
+  "tasks_filterTag": "Etiqueta",
+  "tasks_filterAll": "Todos los estados",
+  "tasks_filterAllTags": "Todas las etiquetas",
+  "tasks_sortBy": "Ordenar por",
+  "tasks_sortRecentlyAssigned": "Asignadas recientemente",
+  "tasks_sortDueSoonest": "Fecha límite más próxima",
+  "tasks_sortTaskName": "Nombre de la tarea",
+  "tasks_shareUpdate": "Compartir actualización",
+  "tasks_noTaskToShare": "No hay ninguna tarea vinculada a este canal.",
+  "tasks_chooseTaskToShare": "Elegir una tarea para compartir",
+  "tasks_updateMessage": "Actualización de la tarea {taskId} ({part}/{total}); toca para revisar",
+  "tasks_updateIncomplete": "La actualización está incompleta. Espera a que lleguen todas las partes.",
+  "tasks_updateOutdated": "Esta actualización no es más reciente que la versión guardada.",
+  "tasks_updateApplied": "Actualización aplicada.",
+  "tasks_updateApplyTitle": "¿Aplicar actualización?",
+  "tasks_updateApplyBody": "¿Aplicar los detalles más recientes de \"{taskName}\" compartidos por {sender}?",
+  "tasks_editTask": "Editar tarea",
+  "tasks_taskUpdated": "Tarea actualizada.",
+  "tasks_updateSendFailed": "No se pudo compartir la actualización.",
+  "tasks_updateSent": "Actualización compartida.",
+  "tasks_updateNotAuthorized": "Solo quien asignó la tarea puede cambiar sus detalles principales.",
+  "tasks_noVisibleChannels": "Los canales de tareas aparecen aquí después de abrirlos desde una tarea.",
   "common_cancel": "Cancelar",
   "common_apply": "Aplicar",
   "common_connect": "Conectar",

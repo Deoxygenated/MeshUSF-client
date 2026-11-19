@@ -28,6 +28,317 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nav_tasks => 'Tâches';
 
   @override
+  String get tasks_assignSection => 'Attribuer';
+
+  @override
+  String get tasks_storageNotice =>
+      'Les tâches sont enregistrées sur cet appareil et envoyées par messages privés.';
+
+  @override
+  String get tasks_openForm => 'Attribuer une tâche';
+
+  @override
+  String get tasks_closeForm => 'Fermer le formulaire';
+
+  @override
+  String get tasks_assignedTasks => 'Tâches attribuées';
+
+  @override
+  String get tasks_noAssignedTasks => 'Aucune tâche attribuée pour le moment.';
+
+  @override
+  String get tasks_lookingSection => 'Attribuées à moi';
+
+  @override
+  String get tasks_noReceivedTasks =>
+      'Aucune tâche ne vous a encore été attribuée.';
+
+  @override
+  String tasks_assignedOn(Object date) {
+    return 'Attribuée le : $date';
+  }
+
+  @override
+  String get tasks_saveTask => 'Attribuer la tâche';
+
+  @override
+  String get tasks_saveFailed =>
+      'Impossible d\'enregistrer la tâche. Réessayez.';
+
+  @override
+  String get tasks_loadFailed => 'Impossible de charger les tâches attribuées.';
+
+  @override
+  String get tasks_missingIdentity =>
+      'L\'identité de la radio connectée est indisponible.';
+
+  @override
+  String get tasks_retryLoad => 'Réessayer';
+
+  @override
+  String get tasks_chooseRecipients => 'Choisir les destinataires';
+
+  @override
+  String get tasks_searchRecipients => 'Rechercher des groupes et contacts';
+
+  @override
+  String tasks_recipientsSelected(int count) {
+    return '$count étiquettes de destinataire sélectionnées';
+  }
+
+  @override
+  String get tasks_everyone => 'Tout le monde';
+
+  @override
+  String get tasks_myself => 'Moi-même';
+
+  @override
+  String get tasks_groups => 'Groupes';
+
+  @override
+  String get tasks_contacts => 'Contacts';
+
+  @override
+  String get tasks_noGroupsOrContacts =>
+      'Aucun groupe ni contact disponible pour le moment.';
+
+  @override
+  String tasks_groupMemberCount(int count) {
+    return '$count membres';
+  }
+
+  @override
+  String get tasks_dueDate => 'Échéance';
+
+  @override
+  String get tasks_noDueDate => 'Aucune échéance';
+
+  @override
+  String get tasks_immediate => 'Immédiate (sous 24 heures)';
+
+  @override
+  String get tasks_longTerm => 'Date à long terme';
+
+  @override
+  String get tasks_completeWithin => 'À terminer sous';
+
+  @override
+  String tasks_hours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count heures',
+      one: '1 heure',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tasks_chooseDate => 'Choisir une date';
+
+  @override
+  String get tasks_taskName => 'Nom de la tâche';
+
+  @override
+  String get tasks_taskNameHint =>
+      'Jusqu’à 17 octets UTF-8 ; le préfixe Task- et un identifiant unique sont ajoutés au nom du canal';
+
+  @override
+  String get tasks_taskNameRequired => 'Saisissez un nom de tâche.';
+
+  @override
+  String get tasks_taskNameTooLong =>
+      'Le nom de la tâche ne doit pas dépasser 17 octets UTF-8.';
+
+  @override
+  String get tasks_descriptionOptional => 'Description (facultative)';
+
+  @override
+  String get tasks_automaticResend =>
+      'Réessayer automatiquement jusqu\'à confirmation';
+
+  @override
+  String get tasks_recipientRequired =>
+      'Choisissez au moins une étiquette de destinataire.';
+
+  @override
+  String get tasks_dueDateRequired => 'Choisissez une échéance.';
+
+  @override
+  String tasks_dueOn(Object date) {
+    return 'Échéance : $date';
+  }
+
+  @override
+  String get tasks_autoResendEnabled => 'Renvoi automatique activé';
+
+  @override
+  String get tasks_autoResendDisabled => 'Renvoi automatique désactivé';
+
+  @override
+  String get tasks_channelsNotReady =>
+      'Attendez la fin du chargement des canaux avant d\'attribuer une tâche.';
+
+  @override
+  String get tasks_noReachableRecipients =>
+      'Les étiquettes sélectionnées ne correspondent à aucun contact de discussion.';
+
+  @override
+  String get tasks_channelSetupFailed =>
+      'Impossible de configurer un canal privé pour la tâche. Vérifiez qu\'un emplacement est disponible.';
+
+  @override
+  String get tasks_sendFailed =>
+      'Impossible d\'envoyer tous les messages. La tâche est enregistrée et pourra être renvoyée.';
+
+  @override
+  String get tasks_messageProcessingFailed =>
+      'Impossible de traiter un message de tâche reçu.';
+
+  @override
+  String get tasks_channelUnavailable =>
+      'Le canal de la tâche n\'est pas disponible sur cette radio.';
+
+  @override
+  String get tasks_statusUntouched => 'Non commencée';
+
+  @override
+  String get tasks_statusWorking => 'En cours';
+
+  @override
+  String get tasks_statusCompleted => 'Terminée';
+
+  @override
+  String get tasks_statusVerifiedComplete => 'Terminée vérifiée';
+
+  @override
+  String get tasks_you => 'Vous';
+
+  @override
+  String tasks_workingMembers(Object members) {
+    return 'En cours : $members';
+  }
+
+  @override
+  String tasks_deliveryCount(int received, int expected) {
+    return '$received sur $expected reçues';
+  }
+
+  @override
+  String tasks_assignedBy(Object name) {
+    return 'Attribuée par : $name';
+  }
+
+  @override
+  String get tasks_unknownAssigner => 'Inconnu';
+
+  @override
+  String get tasks_expand => 'Développer';
+
+  @override
+  String get tasks_collapse => 'Réduire';
+
+  @override
+  String get tasks_taskChannel => 'Canal de la tâche';
+
+  @override
+  String get tasks_noChannelMessages =>
+      'Aucun message dans le canal pour le moment.';
+
+  @override
+  String get tasks_channelMessage => 'Message au canal de la tâche';
+
+  @override
+  String get tasks_channelMessageTooLong =>
+      'Ce message est trop long pour le canal de la tâche.';
+
+  @override
+  String get tasks_send => 'Envoyer';
+
+  @override
+  String get tasks_openChannel => 'Ouvrir le canal';
+
+  @override
+  String get tasks_searchTasks => 'Rechercher des tâches';
+
+  @override
+  String get tasks_filterStatus => 'Statut';
+
+  @override
+  String get tasks_filterTag => 'Étiquette';
+
+  @override
+  String get tasks_filterAll => 'Tous les statuts';
+
+  @override
+  String get tasks_filterAllTags => 'Toutes les étiquettes';
+
+  @override
+  String get tasks_sortBy => 'Trier par';
+
+  @override
+  String get tasks_sortRecentlyAssigned => 'Récemment attribuées';
+
+  @override
+  String get tasks_sortDueSoonest => 'Échéance la plus proche';
+
+  @override
+  String get tasks_sortTaskName => 'Nom de la tâche';
+
+  @override
+  String get tasks_shareUpdate => 'Partager une mise à jour';
+
+  @override
+  String get tasks_noTaskToShare => 'Aucune tâche n\'est associée à ce canal.';
+
+  @override
+  String get tasks_chooseTaskToShare => 'Choisir une tâche à partager';
+
+  @override
+  String tasks_updateMessage(Object part, Object taskId, Object total) {
+    return 'Mise à jour de la tâche $taskId ($part/$total) ; appuyez pour vérifier';
+  }
+
+  @override
+  String get tasks_updateIncomplete =>
+      'La mise à jour est incomplète. Attendez la réception de toutes les parties.';
+
+  @override
+  String get tasks_updateOutdated =>
+      'Cette mise à jour n\'est pas plus récente que la version enregistrée.';
+
+  @override
+  String get tasks_updateApplied => 'Mise à jour appliquée.';
+
+  @override
+  String get tasks_updateApplyTitle => 'Appliquer la mise à jour ?';
+
+  @override
+  String tasks_updateApplyBody(Object sender, Object taskName) {
+    return 'Appliquer les détails plus récents de \"$taskName\" partagés par $sender ?';
+  }
+
+  @override
+  String get tasks_editTask => 'Modifier la tâche';
+
+  @override
+  String get tasks_taskUpdated => 'Tâche mise à jour.';
+
+  @override
+  String get tasks_updateSendFailed => 'Impossible de partager la mise à jour.';
+
+  @override
+  String get tasks_updateSent => 'Mise à jour partagée.';
+
+  @override
+  String get tasks_updateNotAuthorized =>
+      'Seule la personne ayant attribué la tâche peut modifier ses détails principaux.';
+
+  @override
+  String get tasks_noVisibleChannels =>
+      'Les canaux de tâche apparaissent ici après leur ouverture depuis une tâche.';
+
+  @override
   String get common_cancel => 'Annuler';
 
   @override

@@ -16,7 +16,9 @@ import '../services/received_image_store.dart';
 import '../services/ui_view_state_service.dart';
 import '../models/channel.dart';
 import '../models/community.dart';
+import '../storage/assigned_task_store.dart';
 import '../storage/community_store.dart';
+import '../utils/app_logger.dart';
 import '../theme/mesh_theme.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/disconnect_navigation_mixin.dart';
@@ -53,6 +55,8 @@ class _ChannelsScreenState extends State<ChannelsScreen>
   final CommunityStore _communityStore = CommunityStore();
   final CommunityPskIndex _communityIndex = CommunityPskIndex();
   List<Community> _communities = [];
+  Set<String> _hiddenTaskChannelPskHexes = {};
+  bool _taskChannelVisibilityLoaded = false;
   Timer? _searchDebounce;
 
   ChannelMessageStore get _channelMessageStore => ChannelMessageStore();
@@ -66,7 +70,50 @@ class _ChannelsScreenState extends State<ChannelsScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MeshCoreConnector>().getChannels();
       _loadCommunities();
+      _loadTaskChannelVisibility();
     });
+  }
+
+  Future<void> _loadTaskChannelVisibility() async {
+    // Hidden task channels remain configured locally until the task is opened.
+    final connector = context.read<MeshCoreConnector>();
+    final scopeKey = connector.selfPublicKeyHex;
+    if (scopeKey.isEmpty) {
+      if (mounted) {
+        setState(() {
+          _taskChannelVisibilityLoaded = true;
+        });
+      }
+      return;
+    }
+    try {
+      final store = AssignedTaskStore()..setPublicKeyHex = scopeKey;
+      final tasks = await store.loadTasks();
+      if (!mounted || connector.selfPublicKeyHex != scopeKey) return;
+      setState(() {
+        _hiddenTaskChannelPskHexes = tasks
+            .where(
+              (task) => task.channelPskHex.isNotEmpty && !task.channelOpened,
+            )
+            .map((task) => task.channelPskHex)
+            .toSet();
+        _taskChannelVisibilityLoaded = true;
+      });
+    } catch (error) {
+      appLogger.error(
+        'Failed to load task channel visibility: $error',
+        tag: 'Channels',
+      );
+      if (mounted) {
+        setState(() {
+          _hiddenTaskChannelPskHexes = connector.channels
+              .where((channel) => channel.name.startsWith('Task-'))
+              .map((channel) => channel.pskHex)
+              .toSet();
+          _taskChannelVisibilityLoaded = true;
+        });
+      }
+    }
   }
 
   Future<void> _loadCommunities() async {
@@ -179,7 +226,17 @@ class _ChannelsScreenState extends State<ChannelsScreen>
                   );
                 },
                 child: () {
-                  final channels = connector.channels;
+                  final allChannels = connector.channels;
+                  if (!_taskChannelVisibilityLoaded && allChannels.isNotEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final channels = allChannels
+                      .where(
+                        (channel) => !_hiddenTaskChannelPskHexes.contains(
+                          channel.pskHex,
+                        ),
+                      )
+                      .toList();
                   final waitingForFirstChannel =
                       connector.isLoadingChannels && channels.isEmpty;
 
@@ -188,6 +245,20 @@ class _ChannelsScreenState extends State<ChannelsScreen>
                   // of trapping the user behind an idle spinner.
                   if (waitingForFirstChannel) {
                     return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (channels.isEmpty && allChannels.isNotEmpty) {
+                    return ListView(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height - 200,
+                          child: EmptyState(
+                            icon: Icons.task_alt,
+                            title: context.l10n.tasks_noVisibleChannels,
+                          ),
+                        ),
+                      ],
+                    );
                   }
 
                   if (channels.isEmpty) {
@@ -217,6 +288,19 @@ class _ChannelsScreenState extends State<ChannelsScreen>
                     connector,
                     viewState,
                   );
+                  if (filteredChannels.isEmpty) {
+                    return ListView(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height - 200,
+                          child: EmptyState(
+                            icon: Icons.task_alt,
+                            title: context.l10n.tasks_noVisibleChannels,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
 
                   return Column(
                     children: [

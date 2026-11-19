@@ -28,6 +28,316 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nav_tasks => 'Tareas';
 
   @override
+  String get tasks_assignSection => 'Asignar';
+
+  @override
+  String get tasks_storageNotice =>
+      'Las tareas se guardan en este dispositivo y se envían como mensajes privados.';
+
+  @override
+  String get tasks_openForm => 'Asignar una tarea';
+
+  @override
+  String get tasks_closeForm => 'Cerrar formulario';
+
+  @override
+  String get tasks_assignedTasks => 'Tareas asignadas';
+
+  @override
+  String get tasks_noAssignedTasks => 'Aún no hay tareas asignadas.';
+
+  @override
+  String get tasks_lookingSection => 'Asignadas a mí';
+
+  @override
+  String get tasks_noReceivedTasks => 'Aún no te han asignado tareas.';
+
+  @override
+  String tasks_assignedOn(Object date) {
+    return 'Asignada: $date';
+  }
+
+  @override
+  String get tasks_saveTask => 'Asignar tarea';
+
+  @override
+  String get tasks_saveFailed =>
+      'No se pudo guardar la tarea. Inténtalo de nuevo.';
+
+  @override
+  String get tasks_loadFailed => 'No se pudieron cargar las tareas asignadas.';
+
+  @override
+  String get tasks_missingIdentity =>
+      'La identidad de la radio conectada no está disponible.';
+
+  @override
+  String get tasks_retryLoad => 'Reintentar';
+
+  @override
+  String get tasks_chooseRecipients => 'Elegir destinatarios';
+
+  @override
+  String get tasks_searchRecipients => 'Buscar grupos y contactos';
+
+  @override
+  String tasks_recipientsSelected(int count) {
+    return '$count etiquetas de destinatario seleccionadas';
+  }
+
+  @override
+  String get tasks_everyone => 'Todos';
+
+  @override
+  String get tasks_myself => 'Yo';
+
+  @override
+  String get tasks_groups => 'Grupos';
+
+  @override
+  String get tasks_contacts => 'Contactos';
+
+  @override
+  String get tasks_noGroupsOrContacts =>
+      'Aún no hay grupos ni contactos disponibles.';
+
+  @override
+  String tasks_groupMemberCount(int count) {
+    return '$count miembros';
+  }
+
+  @override
+  String get tasks_dueDate => 'Fecha límite';
+
+  @override
+  String get tasks_noDueDate => 'Sin fecha límite';
+
+  @override
+  String get tasks_immediate => 'Inmediata (dentro de 24 horas)';
+
+  @override
+  String get tasks_longTerm => 'Fecha a largo plazo';
+
+  @override
+  String get tasks_completeWithin => 'Completar en';
+
+  @override
+  String tasks_hours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count horas',
+      one: '1 hora',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tasks_chooseDate => 'Elegir una fecha';
+
+  @override
+  String get tasks_taskName => 'Nombre de la tarea';
+
+  @override
+  String get tasks_taskNameHint =>
+      'Hasta 17 bytes UTF-8; se añaden el prefijo Task- y un ID único al nombre del canal';
+
+  @override
+  String get tasks_taskNameRequired => 'Introduce un nombre para la tarea.';
+
+  @override
+  String get tasks_taskNameTooLong =>
+      'El nombre de la tarea debe tener 17 bytes UTF-8 o menos.';
+
+  @override
+  String get tasks_descriptionOptional => 'Descripción (opcional)';
+
+  @override
+  String get tasks_automaticResend =>
+      'Reintentar automáticamente hasta recibir confirmación';
+
+  @override
+  String get tasks_recipientRequired =>
+      'Elige al menos una etiqueta de destinatario.';
+
+  @override
+  String get tasks_dueDateRequired => 'Elige una fecha límite.';
+
+  @override
+  String tasks_dueOn(Object date) {
+    return 'Fecha límite: $date';
+  }
+
+  @override
+  String get tasks_autoResendEnabled => 'Reenvío automático activado';
+
+  @override
+  String get tasks_autoResendDisabled => 'Reenvío automático desactivado';
+
+  @override
+  String get tasks_channelsNotReady =>
+      'Espera a que terminen de cargarse los canales antes de asignar.';
+
+  @override
+  String get tasks_noReachableRecipients =>
+      'Las etiquetas seleccionadas no coinciden con ningún contacto de chat.';
+
+  @override
+  String get tasks_channelSetupFailed =>
+      'No se pudo configurar un canal privado para la tarea. Comprueba que haya un espacio disponible.';
+
+  @override
+  String get tasks_sendFailed =>
+      'No se pudieron enviar todos los mensajes. La tarea está guardada y se puede reintentar.';
+
+  @override
+  String get tasks_messageProcessingFailed =>
+      'No se pudo procesar un mensaje de tarea entrante.';
+
+  @override
+  String get tasks_channelUnavailable =>
+      'El canal de la tarea no está disponible en esta radio.';
+
+  @override
+  String get tasks_statusUntouched => 'Sin empezar';
+
+  @override
+  String get tasks_statusWorking => 'En curso';
+
+  @override
+  String get tasks_statusCompleted => 'Completada';
+
+  @override
+  String get tasks_statusVerifiedComplete => 'Completada verificada';
+
+  @override
+  String get tasks_you => 'Tú';
+
+  @override
+  String tasks_workingMembers(Object members) {
+    return 'Trabajando en ello: $members';
+  }
+
+  @override
+  String tasks_deliveryCount(int received, int expected) {
+    return '$received de $expected recibidas';
+  }
+
+  @override
+  String tasks_assignedBy(Object name) {
+    return 'Asignada por: $name';
+  }
+
+  @override
+  String get tasks_unknownAssigner => 'Desconocido';
+
+  @override
+  String get tasks_expand => 'Expandir';
+
+  @override
+  String get tasks_collapse => 'Contraer';
+
+  @override
+  String get tasks_taskChannel => 'Canal de la tarea';
+
+  @override
+  String get tasks_noChannelMessages => 'Aún no hay mensajes en el canal.';
+
+  @override
+  String get tasks_channelMessage => 'Mensaje al canal de la tarea';
+
+  @override
+  String get tasks_channelMessageTooLong =>
+      'El mensaje es demasiado largo para el canal de la tarea.';
+
+  @override
+  String get tasks_send => 'Enviar';
+
+  @override
+  String get tasks_openChannel => 'Abrir canal';
+
+  @override
+  String get tasks_searchTasks => 'Buscar tareas';
+
+  @override
+  String get tasks_filterStatus => 'Estado';
+
+  @override
+  String get tasks_filterTag => 'Etiqueta';
+
+  @override
+  String get tasks_filterAll => 'Todos los estados';
+
+  @override
+  String get tasks_filterAllTags => 'Todas las etiquetas';
+
+  @override
+  String get tasks_sortBy => 'Ordenar por';
+
+  @override
+  String get tasks_sortRecentlyAssigned => 'Asignadas recientemente';
+
+  @override
+  String get tasks_sortDueSoonest => 'Fecha límite más próxima';
+
+  @override
+  String get tasks_sortTaskName => 'Nombre de la tarea';
+
+  @override
+  String get tasks_shareUpdate => 'Compartir actualización';
+
+  @override
+  String get tasks_noTaskToShare =>
+      'No hay ninguna tarea vinculada a este canal.';
+
+  @override
+  String get tasks_chooseTaskToShare => 'Elegir una tarea para compartir';
+
+  @override
+  String tasks_updateMessage(Object part, Object taskId, Object total) {
+    return 'Actualización de la tarea $taskId ($part/$total); toca para revisar';
+  }
+
+  @override
+  String get tasks_updateIncomplete =>
+      'La actualización está incompleta. Espera a que lleguen todas las partes.';
+
+  @override
+  String get tasks_updateOutdated =>
+      'Esta actualización no es más reciente que la versión guardada.';
+
+  @override
+  String get tasks_updateApplied => 'Actualización aplicada.';
+
+  @override
+  String get tasks_updateApplyTitle => '¿Aplicar actualización?';
+
+  @override
+  String tasks_updateApplyBody(Object sender, Object taskName) {
+    return '¿Aplicar los detalles más recientes de \"$taskName\" compartidos por $sender?';
+  }
+
+  @override
+  String get tasks_editTask => 'Editar tarea';
+
+  @override
+  String get tasks_taskUpdated => 'Tarea actualizada.';
+
+  @override
+  String get tasks_updateSendFailed => 'No se pudo compartir la actualización.';
+
+  @override
+  String get tasks_updateSent => 'Actualización compartida.';
+
+  @override
+  String get tasks_updateNotAuthorized =>
+      'Solo quien asignó la tarea puede cambiar sus detalles principales.';
+
+  @override
+  String get tasks_noVisibleChannels =>
+      'Los canales de tareas aparecen aquí después de abrirlos desde una tarea.';
+
+  @override
   String get common_cancel => 'Cancelar';
 
   @override

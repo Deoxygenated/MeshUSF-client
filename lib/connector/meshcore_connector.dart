@@ -359,6 +359,7 @@ class MeshCoreConnector extends ChangeNotifier {
   static const int _defaultMaxChannels = 40;
   int _maxContacts = _defaultMaxContacts;
   int _maxChannels = _defaultMaxChannels;
+  int _connectionSessionId = 0;
   int? _contactSyncTotal;
   int _contactSyncReceived = 0;
   bool _contactSyncUsesSinceFilter = false;
@@ -532,6 +533,7 @@ class MeshCoreConnector extends ChangeNotifier {
 
   List<Channel> get channels => List.unmodifiable(_channels);
   bool get isConnected => _state == MeshCoreConnectionState.connected;
+  int get connectionSessionId => _connectionSessionId;
   bool get hasGps => _currentCustomVars?['gps'] == '1';
   String? get disconnectMessage => _disconnectMessage;
   void clearDisconnectMessage() {
@@ -684,8 +686,20 @@ class MeshCoreConnector extends ChangeNotifier {
   }
 
   List<Message> getMessages(Contact contact) {
-    return _conversations[contact.publicKeyHex] ?? [];
+    return (_conversations[contact.publicKeyHex] ?? [])
+        .where((message) => !message.text.startsWith('MCTASK1|'))
+        .toList();
   }
+
+  List<Message> getTaskProtocolMessages(Contact contact) {
+    // Keep task wire traffic isolated from ordinary direct chat messages.
+    return (_conversations[contact.publicKeyHex] ?? [])
+        .where((message) => message.text.startsWith('MCTASK1|'))
+        .toList();
+  }
+
+  Future<void> loadMessagesForContact(Contact contact) =>
+      _loadMessagesForContact(contact.publicKeyHex);
 
   Future<void> deleteMessage(Message message) async {
     final contactKeyHex = message.senderKeyHex;
@@ -790,7 +804,16 @@ class MeshCoreConnector extends ChangeNotifier {
   }
 
   List<ChannelMessage> getChannelMessages(Channel channel) {
-    return _channelMessages[channel.index] ?? [];
+    return (_channelMessages[channel.index] ?? [])
+        .where((message) => !message.text.startsWith('MCTASK1|S|'))
+        .toList();
+  }
+
+  List<ChannelMessage> getTaskProtocolChannelMessages(Channel channel) {
+    // Task status and snapshot updates share their channel with normal chat.
+    return (_channelMessages[channel.index] ?? [])
+        .where((message) => message.text.startsWith('MCTASK1|'))
+        .toList();
   }
 
   Future<void> deleteChannelMessage(ChannelMessage message) async {
@@ -6206,7 +6229,8 @@ class MeshCoreConnector extends ChangeNotifier {
       notifyListeners();
 
       // Show notification for new incoming message (run async with translation)
-      if (!message.isOutgoing &&
+      if (!message.text.startsWith('MCTASK1|') &&
+          !message.isOutgoing &&
           !message.isCli &&
           _appSettingsService != null) {
         final settings = _appSettingsService!.settings;
@@ -6533,7 +6557,11 @@ class MeshCoreConnector extends ChangeNotifier {
     String? channelName,
     TranslationResult? translationResult,
   }) {
-    if (message.isOutgoing || _appSettingsService == null) return;
+    if (message.text.startsWith('MCTASK1|S|') ||
+        message.isOutgoing ||
+        _appSettingsService == null) {
+      return;
+    }
     final channelIndex = message.channelIndex;
     if (channelIndex == null) return;
 
@@ -6690,7 +6718,7 @@ class MeshCoreConnector extends ChangeNotifier {
           final isNew = _addChannelMessage(channel.index, message);
           _maybeIncrementChannelUnread(message, isNew: isNew);
           notifyListeners();
-          if (isNew) {
+          if (isNew && !message.text.startsWith('MCTASK1|S|')) {
             // Run translation + notification asynchronously to avoid blocking
             unawaited(() async {
               final translationResult = await translateChannelMessage(
@@ -7016,6 +7044,7 @@ class MeshCoreConnector extends ChangeNotifier {
     ChannelMessage message, {
     required bool isNew,
   }) {
+    if (message.text.startsWith('MCTASK1|S|')) return;
     if (!isNew || message.isOutgoing) {
       _appDebugLogService?.info(
         'Skip unread increment: isNew=$isNew, isOutgoing=${message.isOutgoing}',
@@ -7062,6 +7091,7 @@ class MeshCoreConnector extends ChangeNotifier {
   }
 
   void _maybeIncrementContactUnread(Message message) {
+    if (message.text.startsWith('MCTASK1|')) return;
     if (message.isOutgoing || message.isCli) {
       _appDebugLogService?.info(
         'Skip contact unread increment: isOutgoing=${message.isOutgoing}, isCli=${message.isCli}',
@@ -7803,6 +7833,7 @@ class MeshCoreConnector extends ChangeNotifier {
     if (_state != newState) {
       _state = newState;
       if (newState == MeshCoreConnectionState.connected) {
+        _connectionSessionId++;
         if (_appSettingsService?.settings.notificationsEnabled ?? false) {
           unawaited(_notificationService.requestPermissionsOnce());
         }

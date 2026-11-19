@@ -6,6 +6,145 @@
   "nav_channels": "Channels",
   "nav_map": "Map",
   "nav_tasks": "Tasks",
+  "tasks_assignSection": "Assign",
+  "tasks_storageNotice": "Tasks are saved on this device and assignments are sent as private messages.",
+  "tasks_openForm": "Assign a task",
+  "tasks_closeForm": "Close form",
+  "tasks_assignedTasks": "Assigned tasks",
+  "tasks_noAssignedTasks": "No tasks assigned yet.",
+  "tasks_lookingSection": "Assigned to me",
+  "tasks_noReceivedTasks": "No tasks have been assigned to you yet.",
+  "tasks_assignedOn": "Assigned: {date}",
+  "@tasks_assignedOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "tasks_saveTask": "Assign task",
+  "tasks_saveFailed": "Could not save this task. Please try again.",
+  "tasks_loadFailed": "Could not load assigned tasks.",
+  "tasks_missingIdentity": "The connected radio identity is unavailable.",
+  "tasks_retryLoad": "Retry",
+  "tasks_chooseRecipients": "Choose recipients",
+  "tasks_searchRecipients": "Search groups and contacts",
+  "tasks_recipientsSelected": "{count} recipient tags selected",
+  "@tasks_recipientsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_everyone": "Everyone",
+  "tasks_myself": "Myself",
+  "tasks_groups": "Groups",
+  "tasks_contacts": "Contacts",
+  "tasks_noGroupsOrContacts": "No groups or contacts are available yet.",
+  "tasks_groupMemberCount": "{count} members",
+  "@tasks_groupMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_dueDate": "Due date",
+  "tasks_noDueDate": "No due date",
+  "tasks_immediate": "Immediate (within 24 hours)",
+  "tasks_longTerm": "Long-term date",
+  "tasks_completeWithin": "Complete within",
+  "tasks_hours": "{count, plural, one{1 hour} other{{count} hours}}",
+  "@tasks_hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_chooseDate": "Choose a date",
+  "tasks_taskName": "Task name",
+  "tasks_taskNameHint": "Up to 17 UTF-8 bytes; the Task- prefix and a unique ID are added to the channel name",
+  "tasks_taskNameRequired": "Enter a task name.",
+  "tasks_taskNameTooLong": "Task name must use 17 UTF-8 bytes or fewer.",
+  "tasks_descriptionOptional": "Description (optional)",
+  "tasks_automaticResend": "Automatically retry until acknowledged",
+  "tasks_recipientRequired": "Choose at least one recipient tag.",
+  "tasks_dueDateRequired": "Choose a due date.",
+  "tasks_dueOn": "Due: {date}",
+  "@tasks_dueOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "tasks_autoResendEnabled": "Automatic resend enabled",
+  "tasks_autoResendDisabled": "Automatic resend disabled",
+  "tasks_channelsNotReady": "Wait for task channels to finish loading before assigning.",
+  "tasks_noReachableRecipients": "The selected tags do not match any chat contacts.",
+  "tasks_channelSetupFailed": "Could not configure a private task channel. Check that a channel slot is available.",
+  "tasks_sendFailed": "Could not send all task messages. The task is saved and can be retried.",
+  "tasks_messageProcessingFailed": "Could not process an incoming task message.",
+  "tasks_channelUnavailable": "The task channel is not available on this radio.",
+  "tasks_statusUntouched": "Untouched",
+  "tasks_statusWorking": "Being worked on",
+  "tasks_statusCompleted": "Completed",
+  "tasks_statusVerifiedComplete": "Verified Complete",
+  "tasks_you": "You",
+  "tasks_workingMembers": "Working on it: {members}",
+  "@tasks_workingMembers": {
+    "placeholders": {
+      "members": {}
+    }
+  },
+  "tasks_deliveryCount": "{received} of {expected} received",
+  "@tasks_deliveryCount": {
+    "placeholders": {
+      "received": {
+        "type": "int"
+      },
+      "expected": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_assignedBy": "Assigned by: {name}",
+  "@tasks_assignedBy": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "tasks_unknownAssigner": "Unknown",
+  "tasks_expand": "Expand",
+  "tasks_collapse": "Collapse",
+  "tasks_taskChannel": "Task channel",
+  "tasks_noChannelMessages": "No channel messages yet.",
+  "tasks_channelMessage": "Message the task channel",
+  "tasks_channelMessageTooLong": "This message is too long for the task channel.",
+  "tasks_send": "Send",
+  "tasks_openChannel": "Open channel",
+  "tasks_searchTasks": "Search tasks",
+  "tasks_filterStatus": "Status",
+  "tasks_filterTag": "Tag",
+  "tasks_filterAll": "All statuses",
+  "tasks_filterAllTags": "All tags",
+  "tasks_sortBy": "Sort by",
+  "tasks_sortRecentlyAssigned": "Recently assigned",
+  "tasks_sortDueSoonest": "Due soonest",
+  "tasks_sortTaskName": "Task name",
+  "tasks_shareUpdate": "Share task update",
+  "tasks_noTaskToShare": "No task is linked to this channel.",
+  "tasks_chooseTaskToShare": "Choose a task to share",
+  "tasks_updateMessage": "Task update for {taskId} ({part}/{total}) — tap to review",
+  "tasks_updateIncomplete": "This task update is incomplete. Wait for all parts to arrive.",
+  "tasks_updateOutdated": "This task update is not newer than your saved version.",
+  "tasks_updateApplied": "Task update applied.",
+  "tasks_updateApplyTitle": "Apply task update?",
+  "tasks_updateApplyBody": "Apply the newer details for “{taskName}” shared by {sender}?",
+  "tasks_editTask": "Edit task",
+  "tasks_taskUpdated": "Task updated.",
+  "tasks_updateSendFailed": "Could not share the task update.",
+  "tasks_updateSent": "Task update shared.",
+  "tasks_updateNotAuthorized": "Only the task assigner can change its main details.",
+  "tasks_noVisibleChannels": "Task channels appear here after you open them from a task.",
   "common_cancel": "Cancel",
   "common_apply": "Apply",
   "common_ok": "OK",

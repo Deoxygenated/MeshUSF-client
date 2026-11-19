@@ -136,6 +136,534 @@ abstract class AppLocalizations {
   /// **'Tasks'**
   String get nav_tasks;
 
+  /// No description provided for @tasks_assignSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign'**
+  String get tasks_assignSection;
+
+  /// No description provided for @tasks_storageNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks are saved on this device and assignments are sent as private messages.'**
+  String get tasks_storageNotice;
+
+  /// No description provided for @tasks_openForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign a task'**
+  String get tasks_openForm;
+
+  /// No description provided for @tasks_closeForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Close form'**
+  String get tasks_closeForm;
+
+  /// No description provided for @tasks_assignedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned tasks'**
+  String get tasks_assignedTasks;
+
+  /// No description provided for @tasks_noAssignedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks assigned yet.'**
+  String get tasks_noAssignedTasks;
+
+  /// No description provided for @tasks_lookingSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to me'**
+  String get tasks_lookingSection;
+
+  /// No description provided for @tasks_noReceivedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks have been assigned to you yet.'**
+  String get tasks_noReceivedTasks;
+
+  /// No description provided for @tasks_assignedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned: {date}'**
+  String tasks_assignedOn(Object date);
+
+  /// No description provided for @tasks_saveTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign task'**
+  String get tasks_saveTask;
+
+  /// No description provided for @tasks_saveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save this task. Please try again.'**
+  String get tasks_saveFailed;
+
+  /// No description provided for @tasks_loadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load assigned tasks.'**
+  String get tasks_loadFailed;
+
+  /// No description provided for @tasks_missingIdentity.
+  ///
+  /// In en, this message translates to:
+  /// **'The connected radio identity is unavailable.'**
+  String get tasks_missingIdentity;
+
+  /// No description provided for @tasks_retryLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get tasks_retryLoad;
+
+  /// No description provided for @tasks_chooseRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose recipients'**
+  String get tasks_chooseRecipients;
+
+  /// No description provided for @tasks_searchRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'Search groups and contacts'**
+  String get tasks_searchRecipients;
+
+  /// No description provided for @tasks_recipientsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} recipient tags selected'**
+  String tasks_recipientsSelected(int count);
+
+  /// No description provided for @tasks_everyone.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone'**
+  String get tasks_everyone;
+
+  /// No description provided for @tasks_myself.
+  ///
+  /// In en, this message translates to:
+  /// **'Myself'**
+  String get tasks_myself;
+
+  /// No description provided for @tasks_groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get tasks_groups;
+
+  /// No description provided for @tasks_contacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts'**
+  String get tasks_contacts;
+
+  /// No description provided for @tasks_noGroupsOrContacts.
+  ///
+  /// In en, this message translates to:
+  /// **'No groups or contacts are available yet.'**
+  String get tasks_noGroupsOrContacts;
+
+  /// No description provided for @tasks_groupMemberCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members'**
+  String tasks_groupMemberCount(int count);
+
+  /// No description provided for @tasks_dueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get tasks_dueDate;
+
+  /// No description provided for @tasks_noDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'No due date'**
+  String get tasks_noDueDate;
+
+  /// No description provided for @tasks_immediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediate (within 24 hours)'**
+  String get tasks_immediate;
+
+  /// No description provided for @tasks_longTerm.
+  ///
+  /// In en, this message translates to:
+  /// **'Long-term date'**
+  String get tasks_longTerm;
+
+  /// No description provided for @tasks_completeWithin.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete within'**
+  String get tasks_completeWithin;
+
+  /// No description provided for @tasks_hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 hour} other{{count} hours}}'**
+  String tasks_hours(int count);
+
+  /// No description provided for @tasks_chooseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a date'**
+  String get tasks_chooseDate;
+
+  /// No description provided for @tasks_taskName.
+  ///
+  /// In en, this message translates to:
+  /// **'Task name'**
+  String get tasks_taskName;
+
+  /// No description provided for @tasks_taskNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 17 UTF-8 bytes; the Task- prefix and a unique ID are added to the channel name'**
+  String get tasks_taskNameHint;
+
+  /// No description provided for @tasks_taskNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a task name.'**
+  String get tasks_taskNameRequired;
+
+  /// No description provided for @tasks_taskNameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Task name must use 17 UTF-8 bytes or fewer.'**
+  String get tasks_taskNameTooLong;
+
+  /// No description provided for @tasks_descriptionOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get tasks_descriptionOptional;
+
+  /// No description provided for @tasks_automaticResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically retry until acknowledged'**
+  String get tasks_automaticResend;
+
+  /// No description provided for @tasks_recipientRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one recipient tag.'**
+  String get tasks_recipientRequired;
+
+  /// No description provided for @tasks_dueDateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a due date.'**
+  String get tasks_dueDateRequired;
+
+  /// No description provided for @tasks_dueOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due: {date}'**
+  String tasks_dueOn(Object date);
+
+  /// No description provided for @tasks_autoResendEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic resend enabled'**
+  String get tasks_autoResendEnabled;
+
+  /// No description provided for @tasks_autoResendDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic resend disabled'**
+  String get tasks_autoResendDisabled;
+
+  /// No description provided for @tasks_channelsNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait for task channels to finish loading before assigning.'**
+  String get tasks_channelsNotReady;
+
+  /// No description provided for @tasks_noReachableRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected tags do not match any chat contacts.'**
+  String get tasks_noReachableRecipients;
+
+  /// No description provided for @tasks_channelSetupFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not configure a private task channel. Check that a channel slot is available.'**
+  String get tasks_channelSetupFailed;
+
+  /// No description provided for @tasks_sendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send all task messages. The task is saved and can be retried.'**
+  String get tasks_sendFailed;
+
+  /// No description provided for @tasks_messageProcessingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not process an incoming task message.'**
+  String get tasks_messageProcessingFailed;
+
+  /// No description provided for @tasks_channelUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The task channel is not available on this radio.'**
+  String get tasks_channelUnavailable;
+
+  /// No description provided for @tasks_statusUntouched.
+  ///
+  /// In en, this message translates to:
+  /// **'Untouched'**
+  String get tasks_statusUntouched;
+
+  /// No description provided for @tasks_statusWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Being worked on'**
+  String get tasks_statusWorking;
+
+  /// No description provided for @tasks_statusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get tasks_statusCompleted;
+
+  /// No description provided for @tasks_statusVerifiedComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified Complete'**
+  String get tasks_statusVerifiedComplete;
+
+  /// No description provided for @tasks_you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get tasks_you;
+
+  /// No description provided for @tasks_workingMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Working on it: {members}'**
+  String tasks_workingMembers(Object members);
+
+  /// No description provided for @tasks_deliveryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{received} of {expected} received'**
+  String tasks_deliveryCount(int received, int expected);
+
+  /// No description provided for @tasks_assignedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned by: {name}'**
+  String tasks_assignedBy(Object name);
+
+  /// No description provided for @tasks_unknownAssigner.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get tasks_unknownAssigner;
+
+  /// No description provided for @tasks_expand.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand'**
+  String get tasks_expand;
+
+  /// No description provided for @tasks_collapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get tasks_collapse;
+
+  /// No description provided for @tasks_taskChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Task channel'**
+  String get tasks_taskChannel;
+
+  /// No description provided for @tasks_noChannelMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'No channel messages yet.'**
+  String get tasks_noChannelMessages;
+
+  /// No description provided for @tasks_channelMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message the task channel'**
+  String get tasks_channelMessage;
+
+  /// No description provided for @tasks_channelMessageTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is too long for the task channel.'**
+  String get tasks_channelMessageTooLong;
+
+  /// No description provided for @tasks_send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get tasks_send;
+
+  /// No description provided for @tasks_openChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open channel'**
+  String get tasks_openChannel;
+
+  /// No description provided for @tasks_searchTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tasks'**
+  String get tasks_searchTasks;
+
+  /// No description provided for @tasks_filterStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get tasks_filterStatus;
+
+  /// No description provided for @tasks_filterTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag'**
+  String get tasks_filterTag;
+
+  /// No description provided for @tasks_filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get tasks_filterAll;
+
+  /// No description provided for @tasks_filterAllTags.
+  ///
+  /// In en, this message translates to:
+  /// **'All tags'**
+  String get tasks_filterAllTags;
+
+  /// No description provided for @tasks_sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get tasks_sortBy;
+
+  /// No description provided for @tasks_sortRecentlyAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently assigned'**
+  String get tasks_sortRecentlyAssigned;
+
+  /// No description provided for @tasks_sortDueSoonest.
+  ///
+  /// In en, this message translates to:
+  /// **'Due soonest'**
+  String get tasks_sortDueSoonest;
+
+  /// No description provided for @tasks_sortTaskName.
+  ///
+  /// In en, this message translates to:
+  /// **'Task name'**
+  String get tasks_sortTaskName;
+
+  /// No description provided for @tasks_shareUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Share task update'**
+  String get tasks_shareUpdate;
+
+  /// No description provided for @tasks_noTaskToShare.
+  ///
+  /// In en, this message translates to:
+  /// **'No task is linked to this channel.'**
+  String get tasks_noTaskToShare;
+
+  /// No description provided for @tasks_chooseTaskToShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a task to share'**
+  String get tasks_chooseTaskToShare;
+
+  /// No description provided for @tasks_updateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Task update for {taskId} ({part}/{total}) — tap to review'**
+  String tasks_updateMessage(Object part, Object taskId, Object total);
+
+  /// No description provided for @tasks_updateIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'This task update is incomplete. Wait for all parts to arrive.'**
+  String get tasks_updateIncomplete;
+
+  /// No description provided for @tasks_updateOutdated.
+  ///
+  /// In en, this message translates to:
+  /// **'This task update is not newer than your saved version.'**
+  String get tasks_updateOutdated;
+
+  /// No description provided for @tasks_updateApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Task update applied.'**
+  String get tasks_updateApplied;
+
+  /// No description provided for @tasks_updateApplyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply task update?'**
+  String get tasks_updateApplyTitle;
+
+  /// No description provided for @tasks_updateApplyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply the newer details for “{taskName}” shared by {sender}?'**
+  String tasks_updateApplyBody(Object sender, Object taskName);
+
+  /// No description provided for @tasks_editTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit task'**
+  String get tasks_editTask;
+
+  /// No description provided for @tasks_taskUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Task updated.'**
+  String get tasks_taskUpdated;
+
+  /// No description provided for @tasks_updateSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share the task update.'**
+  String get tasks_updateSendFailed;
+
+  /// No description provided for @tasks_updateSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Task update shared.'**
+  String get tasks_updateSent;
+
+  /// No description provided for @tasks_updateNotAuthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the task assigner can change its main details.'**
+  String get tasks_updateNotAuthorized;
+
+  /// No description provided for @tasks_noVisibleChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Task channels appear here after you open them from a task.'**
+  String get tasks_noVisibleChannels;
+
   /// No description provided for @common_cancel.
   ///
   /// In en, this message translates to:

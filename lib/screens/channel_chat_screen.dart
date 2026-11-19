@@ -26,6 +26,7 @@ import '../l10n/l10n.dart';
 import '../models/channel.dart';
 import '../models/contact.dart';
 import '../models/channel_message.dart';
+import '../models/assigned_task.dart';
 import '../models/image_codec_support.dart' show aeicRatePointForUi;
 import '../models/translation_support.dart';
 import '../services/app_settings_service.dart';
@@ -35,10 +36,13 @@ import '../services/image_chunk_transport.dart';
 import '../services/image_codec_service.dart';
 import '../services/received_image_store.dart';
 import '../services/translation_service.dart';
+import '../services/task_message_protocol.dart';
+import '../storage/assigned_task_store.dart';
 import '../utils/image_save.dart';
 import '../utils/lora_airtime.dart';
 import '../utils/contact_qr.dart';
 import '../utils/contact_qr_frame.dart';
+import '../utils/app_logger.dart';
 import '../widgets/received_image_message.dart';
 import '../widgets/byte_count_input.dart';
 import '../widgets/chat_day_separator.dart';
@@ -93,6 +97,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   bool _isSharingLocation = false;
   bool _isImportingContact = false;
   bool _communitiesLoaded = false;
+  bool _hasTaskForCurrentChannel = false;
 
   /// Per-screen image-id allocator. The id is 8 bits and the reassembly key also
   /// carries the sender prefix and channel, so a per-screen allocator is enough
@@ -132,6 +137,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       });
       connector.setActiveChannel(idx);
       _connector = connector;
+      unawaited(_loadTaskChannelAvailability(connector));
       if (anchor != null && settings.jumpToOldestUnread) {
         _channelSkipNextBottomSnap = true;
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -159,6 +165,26 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
         _communityIndex.initialize(communities);
         _communitiesLoaded = true;
       });
+    }
+  }
+
+  Future<void> _loadTaskChannelAvailability(MeshCoreConnector connector) async {
+    final publicKeyHex = connector.selfPublicKeyHex;
+    if (publicKeyHex.isEmpty) return;
+    try {
+      final store = AssignedTaskStore()..setPublicKeyHex = publicKeyHex;
+      final tasks = await store.loadTasks();
+      if (!mounted || connector.selfPublicKeyHex != publicKeyHex) return;
+      setState(() {
+        _hasTaskForCurrentChannel = tasks.any(
+          (task) => task.channelPskHex == widget.channel.pskHex,
+        );
+      });
+    } catch (error) {
+      appLogger.error(
+        'Failed to load tasks for channel actions: $error',
+        tag: 'Tasks',
+      );
     }
   }
 
@@ -607,6 +633,14 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     double textScale,
     bool urlImagesEnabled,
   ) {
+    final taskUpdate = TaskMessageProtocol.parseTaskUpdatePart(message.text);
+    if (taskUpdate != null) {
+      if (taskUpdate.index != taskUpdate.total) {
+        return const SizedBox.shrink();
+      }
+      return _buildTaskUpdateBubble(message, taskUpdate, textScale);
+    }
+
     final settingsService = context.watch<AppSettingsService>();
     final enableTracing = settingsService.settings.enableMessageTracing;
     final isOutgoing = message.isOutgoing;
@@ -2190,6 +2224,9 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                         case 'location':
                           _sendLocation(connector);
                           break;
+                        case 'task-update':
+                          unawaited(_shareTaskUpdate());
+                          break;
                       }
                     },
                     itemBuilder: (context) => [
@@ -2257,6 +2294,19 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                               const SizedBox(width: 12),
                               Flexible(
                                 child: Text(context.l10n.chat_sendImageLora),
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (_hasTaskForCurrentChannel)
+                        PopupMenuItem(
+                          value: 'task-update',
+                          child: Row(
+                            children: [
+                              const Icon(Icons.task_alt),
+                              const SizedBox(width: 12),
+                              Flexible(
+                                child: Text(context.l10n.tasks_shareUpdate),
                               ),
                             ],
                           ),
@@ -2598,6 +2648,355 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       showDismissibleSnackBar(context, content: Text(message));
     } finally {
       if (mounted) setState(() => _isSharingLocation = false);
+    }
+  }
+
+  Widget _buildTaskUpdateBubble(
+    ChannelMessage message,
+    TaskUpdatePart part,
+    double textScale,
+  ) {
+    final scheme = Theme.of(context).colorScheme;
+    return Align(
+      alignment: message.isOutgoing
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: InkWell(
+          key: Key(
+            'task-update-message-${part.taskId}-'
+            '${part.updatedAtMilliseconds}-${part.index}',
+          ),
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => unawaited(_reviewTaskUpdate(message, part)),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.secondaryContainer,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: scheme.outlineVariant),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.task_alt,
+                  size: 18,
+                  color: scheme.onSecondaryContainer,
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    context.l10n.tasks_updateMessage(
+                      part.index,
+                      part.taskId,
+                      part.total,
+                    ),
+                    style: TextStyle(
+                      color: scheme.onSecondaryContainer,
+                      fontSize: 12 * textScale,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _shareTaskUpdate() async {
+    // Share a versioned task snapshot only for tasks bound to this channel.
+    final connector = context.read<MeshCoreConnector>();
+    final scopeKey = connector.selfPublicKeyHex;
+    if (scopeKey.isEmpty) return;
+    try {
+      final store = AssignedTaskStore()..setPublicKeyHex = scopeKey;
+      final tasks =
+          (await store.loadTasks())
+              .where((task) => task.channelPskHex == widget.channel.pskHex)
+              .toList()
+            ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+      if (!mounted) return;
+      if (tasks.isEmpty) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_noTaskToShare),
+        );
+        return;
+      }
+
+      final selectedTask = await showModalBottomSheet<AssignedTask>(
+        context: context,
+        builder: (sheetContext) => SafeArea(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  sheetContext.l10n.tasks_chooseTaskToShare,
+                  style: Theme.of(sheetContext).textTheme.titleLarge,
+                ),
+              ),
+              for (final task in tasks)
+                ListTile(
+                  leading: const Icon(Icons.task_alt),
+                  title: Text(task.taskName),
+                  subtitle: Text(
+                    sheetContext.l10n.tasks_assignedOn(
+                      MaterialLocalizations.of(
+                        sheetContext,
+                      ).formatMediumDate(task.updatedAt),
+                    ),
+                  ),
+                  onTap: () => Navigator.pop(sheetContext, task),
+                ),
+            ],
+          ),
+        ),
+      );
+      if (selectedTask == null || !mounted) return;
+
+      final now = DateTime.now();
+      if (_lastChannelSendAt != null &&
+          now.difference(_lastChannelSendAt!) < const Duration(seconds: 1)) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.chat_sendCooldown),
+        );
+        return;
+      }
+      final parts = TaskMessageProtocol.encodeTaskUpdate(selectedTask);
+      final maxBytes = maxChannelMessageBytes(connector.selfName);
+      if (parts.any((part) => utf8.encode(part).length > maxBytes)) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.chat_messageTooLong(maxBytes)),
+        );
+        return;
+      }
+      _lastChannelSendAt = now;
+      for (final part in parts) {
+        await connector.sendChannelMessage(widget.channel, part);
+      }
+      if (mounted) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_updateSent),
+        );
+      }
+    } catch (error) {
+      appLogger.error('Failed to share task update: $error', tag: 'Tasks');
+      if (mounted) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_updateSendFailed),
+          backgroundColor: MeshPalette.warn,
+        );
+      }
+    }
+  }
+
+  Future<void> _reviewTaskUpdate(
+    ChannelMessage message,
+    TaskUpdatePart selectedPart,
+  ) async {
+    // Reassemble all parts from the sender, then validate identity, version,
+    // channel, authorization, and status timestamps before applying it.
+    final connector = context.read<MeshCoreConnector>();
+    final senderKey = message.senderKeyHex;
+    if (senderKey == null) return;
+
+    final payloadParts = <int, String>{};
+    for (final candidate in connector.getTaskProtocolChannelMessages(
+      widget.channel,
+    )) {
+      final part = TaskMessageProtocol.parseTaskUpdatePart(candidate.text);
+      if (part == null ||
+          candidate.senderKeyHex != senderKey ||
+          part.taskId != selectedPart.taskId ||
+          part.updatedAtMilliseconds != selectedPart.updatedAtMilliseconds ||
+          part.total != selectedPart.total) {
+        continue;
+      }
+      final existing = payloadParts[part.index];
+      if (existing != null && existing != part.payload) {
+        payloadParts.clear();
+        break;
+      }
+      payloadParts[part.index] = part.payload;
+    }
+    if (payloadParts.length != selectedPart.total) {
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.tasks_updateIncomplete),
+      );
+      return;
+    }
+    final payload = List.generate(
+      selectedPart.total,
+      (index) => payloadParts[index + 1] ?? '',
+    ).join();
+    final snapshot = TaskMessageProtocol.decodeTaskUpdate(
+      payload,
+      taskId: selectedPart.taskId,
+      updatedAtMilliseconds: selectedPart.updatedAtMilliseconds,
+    );
+    if (snapshot == null) {
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.tasks_updateIncomplete),
+      );
+      return;
+    }
+
+    try {
+      final store = AssignedTaskStore()
+        ..setPublicKeyHex = connector.selfPublicKeyHex;
+      final tasks = await store.loadTasks();
+      final index = tasks.indexWhere((task) => task.id == snapshot.id);
+      if (!mounted) return;
+      if (index < 0 ||
+          tasks[index].channelPskHex != widget.channel.pskHex ||
+          snapshot.channelPskHex != widget.channel.pskHex) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_updateOutdated),
+        );
+        return;
+      }
+      final current = tasks[index];
+      if (snapshot.assignedByKey != current.assignedByKey ||
+          !snapshot.assignedAt.isAtSameMomentAs(current.assignedAt) ||
+          !snapshot.updatedAt.isAfter(current.updatedAt)) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_updateOutdated),
+        );
+        return;
+      }
+      final isAssigner = senderKey == current.assignedByKey;
+      final mainInformationChanged =
+          snapshot.taskName != current.taskName ||
+          snapshot.description != current.description ||
+          snapshot.recipientKeys.join('\u0000') !=
+              current.recipientKeys.join('\u0000') ||
+          snapshot.recipientLabels.join('\u0000') !=
+              current.recipientLabels.join('\u0000') ||
+          snapshot.dueMode != current.dueMode ||
+          snapshot.dueAt?.toUtc() != current.dueAt?.toUtc();
+      if (mainInformationChanged && !isAssigner) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_updateNotAuthorized),
+        );
+        return;
+      }
+      final shouldApply = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(dialogContext.l10n.tasks_updateApplyTitle),
+          content: Text(
+            dialogContext.l10n.tasks_updateApplyBody(
+              message.senderName.isEmpty ? senderKey : message.senderName,
+              snapshot.taskName,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(dialogContext.l10n.common_cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(dialogContext.l10n.common_apply),
+            ),
+          ],
+        ),
+      );
+      if (shouldApply != true || !mounted) return;
+
+      final statuses = Map<String, Map<String, dynamic>>.from(
+        current.memberStatuses,
+      );
+      var hasNewStatus = false;
+      for (final entry in snapshot.memberStatuses.entries) {
+        if (!isAssigner && entry.key != senderKey) continue;
+        final incomingStatus = entry.value;
+        final statusName = incomingStatus['status'] as String?;
+        final incomingStatusTime = DateTime.tryParse(
+          incomingStatus['updated_at'] as String? ?? '',
+        );
+        final status = AssignedTaskStatus.values.where(
+          (item) => item.name == statusName,
+        );
+        final currentStatusTime = DateTime.tryParse(
+          statuses[entry.key]?['updated_at'] as String? ?? '',
+        );
+        if (status.isNotEmpty &&
+            incomingStatusTime != null &&
+            (currentStatusTime == null ||
+                incomingStatusTime.isAfter(currentStatusTime)) &&
+            (status.first != AssignedTaskStatus.verifiedComplete ||
+                entry.key == current.assignedByKey)) {
+          statuses[entry.key] = {
+            'status': status.first.name,
+            'updated_at': incomingStatusTime.toUtc().toIso8601String(),
+          };
+          hasNewStatus = true;
+        }
+      }
+      if (!isAssigner && !hasNewStatus) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_updateOutdated),
+        );
+        return;
+      }
+
+      if (isAssigner && snapshot.channelName != current.channelName) {
+        await connector.setChannel(
+          widget.channel.index,
+          snapshot.channelName,
+          widget.channel.psk,
+        );
+      }
+
+      final updated = current.copyWith(
+        taskName: isAssigner ? snapshot.taskName : current.taskName,
+        channelName: isAssigner ? snapshot.channelName : current.channelName,
+        description: isAssigner ? snapshot.description : current.description,
+        recipientKeys: isAssigner
+            ? snapshot.recipientKeys
+            : current.recipientKeys,
+        recipientLabels: isAssigner
+            ? snapshot.recipientLabels
+            : current.recipientLabels,
+        dueMode: isAssigner ? snapshot.dueMode : current.dueMode,
+        dueAt: isAssigner ? snapshot.dueAt : current.dueAt,
+        clearDueAt: isAssigner && snapshot.dueAt == null,
+        memberStatuses: statuses,
+        updatedAt: snapshot.updatedAt,
+      );
+      tasks[index] = updated;
+      await store.saveTasks(tasks);
+      if (!mounted) return;
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.tasks_updateApplied),
+      );
+    } catch (error) {
+      appLogger.error('Failed to apply task update: $error', tag: 'Tasks');
+      if (mounted) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.tasks_saveFailed),
+          backgroundColor: MeshPalette.warn,
+        );
+      }
     }
   }
 

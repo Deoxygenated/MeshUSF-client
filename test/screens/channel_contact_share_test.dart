@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meshusf/connector/meshcore_connector.dart';
 import 'package:meshusf/connector/meshcore_protocol.dart';
 import 'package:meshusf/l10n/app_localizations.dart';
+import 'package:meshusf/models/assigned_task.dart';
 import 'package:meshusf/models/channel.dart';
 import 'package:meshusf/models/channel_message.dart';
 import 'package:meshusf/models/contact.dart';
@@ -20,6 +21,8 @@ import 'package:meshusf/services/app_settings_service.dart';
 import 'package:meshusf/services/chat_text_scale_service.dart';
 import 'package:meshusf/services/path_history_service.dart';
 import 'package:meshusf/services/storage_service.dart';
+import 'package:meshusf/services/task_message_protocol.dart';
+import 'package:meshusf/storage/assigned_task_store.dart';
 import 'package:meshusf/storage/prefs_manager.dart';
 import 'package:meshusf/theme/mesh_theme.dart';
 import 'package:meshusf/widgets/translated_message_content.dart';
@@ -50,6 +53,7 @@ class _Connector extends MeshCoreConnector {
           ChannelMessage? replyTo,
         })
       >[];
+  final configuredChannels = <Channel>[];
   bool failShare = false;
 
   @override
@@ -58,6 +62,8 @@ class _Connector extends MeshCoreConnector {
   Uint8List? get selfPublicKey => ownKey;
   @override
   String? get selfName => ownName;
+  @override
+  String get selfPublicKeyHex => ownKey == null ? '' : pubKeyToHex(ownKey!);
   @override
   List<Contact> get allContactsUnfiltered => [...saved, ...discovered];
   @override
@@ -80,11 +86,19 @@ class _Connector extends MeshCoreConnector {
   @override
   List<ChannelMessage> getChannelMessages(Channel channel) => messages;
   @override
+  List<ChannelMessage> getTaskProtocolChannelMessages(Channel channel) =>
+      messages.where((message) => message.text.startsWith('MCTASK1|')).toList();
+  @override
   void acquireRadioStatsPolling() {}
   @override
   void releaseRadioStatsPolling() {}
   @override
   void setActiveChannel(int? index) {}
+  @override
+  Future<void> setChannel(int index, String name, Uint8List psk) async {
+    configuredChannels.add(Channel(index: index, name: name, psk: psk));
+  }
+
   @override
   Future<List<ChannelMessage>> loadOlderChannelMessages(
     int index, {
@@ -158,6 +172,7 @@ Future<void> _show(
   _Connector connector, {
   double scale = 1,
   bool dm = false,
+  Channel? channel,
 }) async {
   await tester.pumpWidget(
     MultiProvider(
@@ -187,11 +202,13 @@ Future<void> _show(
                 ),
               )
             : ChannelChatScreen(
-                channel: Channel(
-                  index: 7,
-                  name: 'Public',
-                  psk: hex2Uint8List(Channel.publicChannelPsk),
-                ),
+                channel:
+                    channel ??
+                    Channel(
+                      index: 7,
+                      name: 'Public',
+                      psk: hex2Uint8List(Channel.publicChannelPsk),
+                    ),
               ),
       ),
     ),
@@ -850,5 +867,133 @@ void main() {
     expect(connector.frames, isEmpty);
     expect(connector.refreshes, 0);
     await tester.pumpAndSettle();
+  });
+
+  testWidgets('task updates can be shared and applied from their channel', (
+    tester,
+  ) async {
+    final connector = _Connector();
+    addTearDown(connector.dispose);
+    final ownerKey = pubKeyToHex(connector.ownKey!);
+    const pskHex = '0123456789abcdef0123456789abcdef';
+    final channel = Channel(
+      index: 7,
+      name: 'Task-test',
+      psk: hex2Uint8List(pskHex),
+    );
+    final assignedAt = DateTime.utc(2026, 11, 18);
+    final original = AssignedTask(
+      id: 'task-123',
+      taskName: 'Check supply kit',
+      description: 'Check each item.',
+      recipientKeys: const ['everyone'],
+      recipientLabels: const ['Everyone'],
+      assignedByKey: ownerKey,
+      assignedByName: 'Owner',
+      channelName: channel.name,
+      channelPskHex: pskHex,
+      channelIndex: channel.index,
+      dueMode: AssignedTaskDueMode.none,
+      dueAt: null,
+      assignedAt: assignedAt,
+      updatedAt: assignedAt,
+      automaticResendEnabled: true,
+    );
+    final store = AssignedTaskStore()
+      ..setPublicKeyHex = connector.selfPublicKeyHex;
+    await store.saveTasks([original]);
+
+    await _show(tester, connector, channel: channel);
+    await tester.tap(find.byIcon(Icons.add_circle_outline));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Share task update'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(original.taskName));
+    await tester.pumpAndSettle();
+    expect(connector.channelSends, isNotEmpty);
+    expect(
+      connector.channelSends.every(
+        (sent) => TaskMessageProtocol.parseTaskUpdatePart(sent.text) != null,
+      ),
+      isTrue,
+    );
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
+
+    final updatedAt = assignedAt.add(const Duration(minutes: 5));
+    final updated = original.copyWith(
+      taskName: 'Restock kit',
+      channelName: 'Task-Restock kit-task-12',
+      updatedAt: updatedAt,
+    );
+    connector.messages.addAll(
+      TaskMessageProtocol.encodeTaskUpdate(updated).map(
+        (text) => ChannelMessage(
+          senderKey: connector.ownKey,
+          senderName: 'Owner',
+          text: text,
+          timestamp: updatedAt,
+          isOutgoing: false,
+          channelIndex: channel.index,
+        ),
+      ),
+    );
+    connector.notifyListeners();
+    await tester.pumpAndSettle();
+    final firstPart = TaskMessageProtocol.parseTaskUpdatePart(
+      connector.messages.last.text,
+    )!;
+    final updateBubble = tester.widget<InkWell>(
+      find.byKey(
+        Key(
+          'task-update-message-${firstPart.taskId}-'
+          '${firstPart.updatedAtMilliseconds}-${firstPart.index}',
+        ),
+      ),
+    );
+    expect(updateBubble.onTap, isNotNull);
+    updateBubble.onTap!();
+    await tester.pumpAndSettle();
+    expect(find.text('Apply task update?'), findsOneWidget);
+    await tester.tap(find.widgetWithText(FilledButton, 'Apply'));
+    await tester.pumpAndSettle();
+
+    expect((await store.loadTasks()).single.taskName, updated.taskName);
+    expect(connector.configuredChannels.single.name, updated.channelName);
+
+    final otherParticipantKey = Uint8List.fromList(List.filled(32, 17));
+    final unauthorized = updated.copyWith(
+      taskName: 'Fake task details',
+      updatedAt: updatedAt.add(const Duration(minutes: 5)),
+    );
+    connector.messages.addAll(
+      TaskMessageProtocol.encodeTaskUpdate(unauthorized).map(
+        (text) => ChannelMessage(
+          senderKey: otherParticipantKey,
+          senderName: 'Participant',
+          text: text,
+          timestamp: unauthorized.updatedAt,
+          isOutgoing: false,
+          channelIndex: channel.index,
+        ),
+      ),
+    );
+    connector.notifyListeners();
+    await tester.pumpAndSettle();
+    final unauthorizedPart = TaskMessageProtocol.parseTaskUpdatePart(
+      connector.messages.last.text,
+    )!;
+    final unauthorizedBubble = tester.widget<InkWell>(
+      find.byKey(
+        Key(
+          'task-update-message-${unauthorizedPart.taskId}-'
+          '${unauthorizedPart.updatedAtMilliseconds}-'
+          '${unauthorizedPart.index}',
+        ),
+      ),
+    );
+    unauthorizedBubble.onTap!();
+    await tester.pumpAndSettle();
+    expect((await store.loadTasks()).single.taskName, updated.taskName);
   });
 }

@@ -14,6 +14,145 @@
   "nav_channels": "Canaux",
   "nav_map": "Carte",
   "nav_tasks": "Tâches",
+  "tasks_assignSection": "Attribuer",
+  "tasks_storageNotice": "Les tâches sont enregistrées sur cet appareil et envoyées par messages privés.",
+  "tasks_openForm": "Attribuer une tâche",
+  "tasks_closeForm": "Fermer le formulaire",
+  "tasks_assignedTasks": "Tâches attribuées",
+  "tasks_noAssignedTasks": "Aucune tâche attribuée pour le moment.",
+  "tasks_lookingSection": "Attribuées à moi",
+  "tasks_noReceivedTasks": "Aucune tâche ne vous a encore été attribuée.",
+  "tasks_assignedOn": "Attribuée le : {date}",
+  "@tasks_assignedOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "tasks_saveTask": "Attribuer la tâche",
+  "tasks_saveFailed": "Impossible d'enregistrer la tâche. Réessayez.",
+  "tasks_loadFailed": "Impossible de charger les tâches attribuées.",
+  "tasks_missingIdentity": "L'identité de la radio connectée est indisponible.",
+  "tasks_retryLoad": "Réessayer",
+  "tasks_chooseRecipients": "Choisir les destinataires",
+  "tasks_searchRecipients": "Rechercher des groupes et contacts",
+  "tasks_recipientsSelected": "{count} étiquettes de destinataire sélectionnées",
+  "@tasks_recipientsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_everyone": "Tout le monde",
+  "tasks_myself": "Moi-même",
+  "tasks_groups": "Groupes",
+  "tasks_contacts": "Contacts",
+  "tasks_noGroupsOrContacts": "Aucun groupe ni contact disponible pour le moment.",
+  "tasks_groupMemberCount": "{count} membres",
+  "@tasks_groupMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_dueDate": "Échéance",
+  "tasks_noDueDate": "Aucune échéance",
+  "tasks_immediate": "Immédiate (sous 24 heures)",
+  "tasks_longTerm": "Date à long terme",
+  "tasks_completeWithin": "À terminer sous",
+  "tasks_hours": "{count, plural, one{1 heure} other{{count} heures}}",
+  "@tasks_hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_chooseDate": "Choisir une date",
+  "tasks_taskName": "Nom de la tâche",
+  "tasks_taskNameHint": "Jusqu’à 17 octets UTF-8 ; le préfixe Task- et un identifiant unique sont ajoutés au nom du canal",
+  "tasks_taskNameRequired": "Saisissez un nom de tâche.",
+  "tasks_taskNameTooLong": "Le nom de la tâche ne doit pas dépasser 17 octets UTF-8.",
+  "tasks_descriptionOptional": "Description (facultative)",
+  "tasks_automaticResend": "Réessayer automatiquement jusqu'à confirmation",
+  "tasks_recipientRequired": "Choisissez au moins une étiquette de destinataire.",
+  "tasks_dueDateRequired": "Choisissez une échéance.",
+  "tasks_dueOn": "Échéance : {date}",
+  "@tasks_dueOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "tasks_autoResendEnabled": "Renvoi automatique activé",
+  "tasks_autoResendDisabled": "Renvoi automatique désactivé",
+  "tasks_channelsNotReady": "Attendez la fin du chargement des canaux avant d'attribuer une tâche.",
+  "tasks_noReachableRecipients": "Les étiquettes sélectionnées ne correspondent à aucun contact de discussion.",
+  "tasks_channelSetupFailed": "Impossible de configurer un canal privé pour la tâche. Vérifiez qu'un emplacement est disponible.",
+  "tasks_sendFailed": "Impossible d'envoyer tous les messages. La tâche est enregistrée et pourra être renvoyée.",
+  "tasks_messageProcessingFailed": "Impossible de traiter un message de tâche reçu.",
+  "tasks_channelUnavailable": "Le canal de la tâche n'est pas disponible sur cette radio.",
+  "tasks_statusUntouched": "Non commencée",
+  "tasks_statusWorking": "En cours",
+  "tasks_statusCompleted": "Terminée",
+  "tasks_statusVerifiedComplete": "Terminée vérifiée",
+  "tasks_you": "Vous",
+  "tasks_workingMembers": "En cours : {members}",
+  "@tasks_workingMembers": {
+    "placeholders": {
+      "members": {}
+    }
+  },
+  "tasks_deliveryCount": "{received} sur {expected} reçues",
+  "@tasks_deliveryCount": {
+    "placeholders": {
+      "received": {
+        "type": "int"
+      },
+      "expected": {
+        "type": "int"
+      }
+    }
+  },
+  "tasks_assignedBy": "Attribuée par : {name}",
+  "@tasks_assignedBy": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "tasks_unknownAssigner": "Inconnu",
+  "tasks_expand": "Développer",
+  "tasks_collapse": "Réduire",
+  "tasks_taskChannel": "Canal de la tâche",
+  "tasks_noChannelMessages": "Aucun message dans le canal pour le moment.",
+  "tasks_channelMessage": "Message au canal de la tâche",
+  "tasks_channelMessageTooLong": "Ce message est trop long pour le canal de la tâche.",
+  "tasks_send": "Envoyer",
+  "tasks_openChannel": "Ouvrir le canal",
+  "tasks_searchTasks": "Rechercher des tâches",
+  "tasks_filterStatus": "Statut",
+  "tasks_filterTag": "Étiquette",
+  "tasks_filterAll": "Tous les statuts",
+  "tasks_filterAllTags": "Toutes les étiquettes",
+  "tasks_sortBy": "Trier par",
+  "tasks_sortRecentlyAssigned": "Récemment attribuées",
+  "tasks_sortDueSoonest": "Échéance la plus proche",
+  "tasks_sortTaskName": "Nom de la tâche",
+  "tasks_shareUpdate": "Partager une mise à jour",
+  "tasks_noTaskToShare": "Aucune tâche n'est associée à ce canal.",
+  "tasks_chooseTaskToShare": "Choisir une tâche à partager",
+  "tasks_updateMessage": "Mise à jour de la tâche {taskId} ({part}/{total}) ; appuyez pour vérifier",
+  "tasks_updateIncomplete": "La mise à jour est incomplète. Attendez la réception de toutes les parties.",
+  "tasks_updateOutdated": "Cette mise à jour n'est pas plus récente que la version enregistrée.",
+  "tasks_updateApplied": "Mise à jour appliquée.",
+  "tasks_updateApplyTitle": "Appliquer la mise à jour ?",
+  "tasks_updateApplyBody": "Appliquer les détails plus récents de \"{taskName}\" partagés par {sender} ?",
+  "tasks_editTask": "Modifier la tâche",
+  "tasks_taskUpdated": "Tâche mise à jour.",
+  "tasks_updateSendFailed": "Impossible de partager la mise à jour.",
+  "tasks_updateSent": "Mise à jour partagée.",
+  "tasks_updateNotAuthorized": "Seule la personne ayant attribué la tâche peut modifier ses détails principaux.",
+  "tasks_noVisibleChannels": "Les canaux de tâche apparaissent ici après leur ouverture depuis une tâche.",
   "common_cancel": "Annuler",
   "common_apply": "Appliquer",
   "common_connect": "Connecter",
